@@ -1,2 +1,4 @@
 python-dotenv
 supabase
+groq
+requests
