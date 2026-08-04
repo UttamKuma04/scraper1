@@ -1,0 +1,33 @@
+name: Classify Jobs
+
+on:
+  schedule:
+    # Runs every day at 3:15 PM IST (09:45 UTC)
+    - cron: "45 9 * * *"
+  workflow_dispatch:
+
+jobs:
+  classify-jobs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run job classifier
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_API_KEY: ${{ secrets.SUPABASE_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+        run: |
+          python scraper/L2_classify_jobs.py
