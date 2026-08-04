@@ -9,6 +9,7 @@ on:
 jobs:
   classify-jobs:
     runs-on: ubuntu-latest
+    environment: api_key   # <-- this line is what's missing
 
     steps:
       - name: Checkout repository
