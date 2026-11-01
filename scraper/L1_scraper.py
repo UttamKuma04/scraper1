@@ -11,11 +11,7 @@ load_dotenv()
 SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_API_KEY = os.getenv("SUPABASE_API_KEY") 
 
-<<<<<<< HEAD
-BASE_URL = "https://api.getsig.in/api/v3/jobs/recent"
-=======
 BASE_URL = "https://api.getsig.in/api/v3/jobs"
->>>>>>> 0b0510b (V3 of signal)
 DEFAULT_HEADERS = {
     "User-Agent": "Mozilla/5.0",
     "Accept": "application/json",
