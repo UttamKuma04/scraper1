@@ -189,6 +189,5 @@ def main() -> None:
     supabase, groq = get_clients()
     process_classifications(supabase, groq, limit=args.limit, delay=args.delay, model=args.model)
 
-
 if __name__ == "__main__":
     main()

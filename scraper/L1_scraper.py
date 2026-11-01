@@ -11,7 +11,11 @@ load_dotenv()
 SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_API_KEY = os.getenv("SUPABASE_API_KEY") 
 
+<<<<<<< HEAD
 BASE_URL = "https://api.getsig.in/api/v3/jobs/recent"
+=======
+BASE_URL = "https://api.getsig.in/api/v3/jobs"
+>>>>>>> 0b0510b (V3 of signal)
 DEFAULT_HEADERS = {
     "User-Agent": "Mozilla/5.0",
     "Accept": "application/json",
@@ -70,17 +74,27 @@ def fetch_all_jobs(limit: int, delay: float, timeout: int) -> list[dict]:
 
 
 def transform_job_for_supabase(job: dict) -> dict:
-    """Map API JSON fields to Supabase PostgreSQL table column names."""
+    """Map GetSig v3 API job fields to Supabase PostgreSQL table column names."""
+    company_info = job.get("company") or {}
+    location_info = job.get("location") or {}
+    pay_info = job.get("pay") or {}
+
+    stipend = None
+    if pay_info.get("min") is not None or pay_info.get("max") is not None:
+        currency = pay_info.get("currency") or ""
+        period = pay_info.get("period") or ""
+        stipend = f"{currency} {pay_info.get('min')}-{pay_info.get('max')}/{period}".strip()
+
     return {
-        "company": job.get("company") or "Unknown Company",
-        "role": job.get("role") or "Unknown Role",
-        "full_description": job.get("fullDescription"),
-        "tech_keywords": job.get("techKeywords") if isinstance(job.get("techKeywords"), list) else [],
-        "application_link": job.get("applicationLink"),
-        "contact_email": job.get("contactEmail"),
-        "contact_phone": job.get("contactPhone"),
-        "stipend": job.get("stipend"),
-        "location": job.get("location"),
+        "company": company_info.get("name") or "Unknown Company",
+        "role": job.get("title") or "Unknown Role",
+        "full_description": job.get("description") or job.get("summary"),
+        "tech_keywords": job.get("skills") if isinstance(job.get("skills"), list) else [],
+        "application_link": job.get("apply_url") or job.get("url"),
+        "contact_email": job.get("contact_email"),
+        "contact_phone": job.get("contact_phone"),
+        "stipend": stipend,
+        "location": location_info.get("text"),
     }
 
 

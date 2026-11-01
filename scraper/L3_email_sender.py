@@ -21,7 +21,6 @@ SMTP_USER = os.getenv("SMTP_USER")
 CANDIDATE_EMAIL = os.getenv("CANDIDATE_EMAIL")  
 SMTP_PASSWORD = os.getenv("GMAIL_APP_PASSWORD")
 
-# Supabase Storage Configuration
 RESUME_BUCKET = "resume"
 RESUME_FILE_KEY = "uttam_software.pdf"
 
@@ -289,7 +288,6 @@ def main() -> None:
     args = parser.parse_args()
 
     send_emails(limit=args.limit, delay=args.delay)
-
 
 if __name__ == "__main__":
     main()
